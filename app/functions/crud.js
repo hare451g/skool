@@ -1,9 +1,9 @@
-async function getAll(Model) {
-  return Model.find();
+async function getAll(Model, populate) {
+  return Model.find().populate(populate);
 }
 
-function getById(Model, id) {
-  return Model.findById(id);
+function getById(Model, id, populate) {
+  return Model.findById(id).populate(populate);
 }
 
 function createNew(Model, document) {
@@ -12,7 +12,7 @@ function createNew(Model, document) {
 }
 
 function update(Model, id, document) {
-  const updatedModel = Model.findByIdAndUpdate(id, document);
+  const updatedModel = Model.findByIdAndUpdate(id, { $set: document });
   return updatedModel;
 }
 
