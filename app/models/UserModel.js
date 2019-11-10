@@ -6,11 +6,8 @@ const UserModel = mongoose.model(
     {
       role: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'roles'
-      },
-      profile: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'profiles'
+        ref: 'roles',
+        required: true
       },
       username: {
         type: String,
