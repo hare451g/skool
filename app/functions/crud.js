@@ -6,6 +6,10 @@ function getById(Model, id, populate) {
   return Model.findById(id).populate(populate);
 }
 
+function getDocument(Model, queryObject, populate) {
+  return Model.findOne(queryObject).populate(populate);
+}
+
 function createNew(Model, document) {
   const newDocument = new Model(document);
   return newDocument.save();
@@ -21,6 +25,6 @@ function remove(Model, id) {
   return removedModel;
 }
 
-const crud = { getAll, getById, createNew, update, remove };
+const crud = { getAll, getById, getDocument, createNew, update, remove };
 
 module.exports = crud;
