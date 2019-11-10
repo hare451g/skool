@@ -7,6 +7,7 @@ const roleService = require('./services/roleService');
 const academicYearService = require('./services/academicYearService');
 const majorService = require('./services/majorService');
 const degreeService = require('./services/degreeService');
+const subjectService = require('./services/subjectService');
 
 // set middlewares
 App.use(BodyParser.json());
@@ -17,5 +18,6 @@ App.use('/roles', roleService);
 App.use('/academic-year', academicYearService);
 App.use('/major', majorService);
 App.use('/degree', degreeService);
+App.use('/subject', subjectService);
 
 module.exports = App;
