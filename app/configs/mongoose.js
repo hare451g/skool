@@ -32,6 +32,7 @@ async function connect(url) {
       useCreateIndex: true,
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
       autoReconnect: true,
       reconnectTries: 1000000,
       reconnectInterval: 3000
