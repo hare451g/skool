@@ -37,6 +37,10 @@ const ProfileModel = mongoose.model(
           }
         ]
       },
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users'
+      },
       relatedPerson: [
         {
           person: {
