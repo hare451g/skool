@@ -1,6 +1,8 @@
 const router = require('express').Router();
 
 const SubjectModel = require('../models/SubjectModel');
+const DegreeModel = require('../models/DegreeModel');
+const MajorModel = require('../models/MajorModel');
 
 const {
   getAll,
@@ -13,7 +15,7 @@ const {
 // Get All
 router.get('/', async (req, res) => {
   try {
-    const subjects = await getAll(SubjectModel);
+    const subjects = await getAll(SubjectModel, ['degree', 'major']);
     res.status(200).json({
       message: `fetched ${subjects.length} subjects`,
       list: subjects
@@ -32,12 +34,12 @@ router.get('/:id', async (req, res) => {
       throw { message: 'id is required !' };
     }
 
-    const subject = await getById(SubjectModel, id);
+    const subject = await getById(SubjectModel, id, ['degree', 'major']);
 
     if (subject) {
       res.status(200).json({
         message: `fetched one subject`,
-        data: subject
+        data: subject.populate('degrees')
       });
     } else {
       res.status(404).json({
@@ -52,13 +54,16 @@ router.get('/:id', async (req, res) => {
 // create new subject
 router.post('/', async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, major_id: majorId, degree_id: degreeId } = req.body;
 
-    if (!name) {
-      throw { message: 'name is required !' };
-    }
+    const major = await getById(MajorModel, majorId);
+    const degree = await getById(DegreeModel, degreeId);
 
-    const subject = await createNew(SubjectModel, { name });
+    const subject = await createNew(SubjectModel, {
+      name,
+      major: major._id,
+      degree: degree._id
+    });
 
     res.status(201).json({
       message: `created new subject: ${subject.name}`,
@@ -78,13 +83,7 @@ router.patch('/:id', async (req, res) => {
       throw { message: 'id is required !' };
     }
 
-    const { name } = req.body;
-
-    if (!name) {
-      throw { message: 'name is required !' };
-    }
-
-    const subject = await update(SubjectModel, id, { name });
+    const subject = await update(SubjectModel, id, req.body);
 
     res.status(200).json({
       message: `updated subject ${subject.name}`,
